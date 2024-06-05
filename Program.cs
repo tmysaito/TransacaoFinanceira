@@ -33,7 +33,7 @@ namespace TransacaoFinanceira
 
     class executarTransacaoFinanceira: acessoDados
     {
-        public void transferir(int correlation_id, int conta_origem, int conta_destino, decimal valor)
+        public void transferir(int correlation_id, long conta_origem, long conta_destino, decimal valor)
         {
             contas_saldo conta_saldo_origem = getSaldo<contas_saldo>(conta_origem) ;
             if (conta_saldo_origem.saldo < valor)
@@ -52,12 +52,12 @@ namespace TransacaoFinanceira
     }
     class contas_saldo
     {
-        public contas_saldo(int conta, decimal valor)
+        public contas_saldo(long conta, decimal valor)
         {
             this.conta = conta;
             this.saldo = valor;
         }
-        public int conta { get; set; }
+        public long conta { get; set; }
         public decimal saldo { get; set; }
     }
     class acessoDados
@@ -82,7 +82,7 @@ namespace TransacaoFinanceira
             this.SALDOS.Add(938485762, 180);
            
         }
-        public T getSaldo<T>(int id)
+        public T getSaldo<T>(long id)
         {          
             return (T)Convert.ChangeType(TABELA_SALDOS.Find(x => x.conta == id), typeof(T));
         }
