@@ -12,30 +12,30 @@ namespace TransacaoFinanceira
 
         static void Main(string[] args)
         {
-            var TRANSACOES = new[] { new {correlation_id= 1,datetime="09/09/2023 14:15:00", conta_origem= 938485762, conta_destino= 2147483649, VALOR= 150},
-                                     new {correlation_id= 2,datetime="09/09/2023 14:15:05", conta_origem= 2147483649, conta_destino= 210385733, VALOR= 149},
-                                     new {correlation_id= 3,datetime="09/09/2023 14:15:29", conta_origem= 347586970, conta_destino= 238596054, VALOR= 1100},
-                                     new {correlation_id= 4,datetime="09/09/2023 14:17:00", conta_origem= 675869708, conta_destino= 210385733, VALOR= 5300},
-                                     new {correlation_id= 5,datetime="09/09/2023 14:18:00", conta_origem= 238596054, conta_destino= 674038564, VALOR= 1489},
-                                     new {correlation_id= 6,datetime="09/09/2023 14:18:20", conta_origem= 573659065, conta_destino= 563856300, VALOR= 49},
-                                     new {correlation_id= 7,datetime="09/09/2023 14:19:00", conta_origem= 938485762, conta_destino= 2147483649, VALOR= 44},
-                                     new {correlation_id= 8,datetime="09/09/2023 14:19:01", conta_origem= 573659065, conta_destino= 675869708, VALOR= 150},
+            var transacoes = new[] { new transacao {correlationId= 1,dateTime="09/09/2023 14:15:00", contaOrigem= 938485762, contaDestino= 2147483649, valor= 150},
+                                     new transacao {correlationId= 2,dateTime="09/09/2023 14:15:05", contaOrigem= 2147483649, contaDestino= 210385733, valor= 149},
+                                     new transacao {correlationId= 3,dateTime="09/09/2023 14:15:29", contaOrigem= 347586970, contaDestino= 238596054, valor= 1100},
+                                     new transacao {correlationId= 4,dateTime="09/09/2023 14:17:00", contaOrigem= 675869708, contaDestino= 210385733, valor= 5300},
+                                     new transacao {correlationId= 5,dateTime="09/09/2023 14:18:00", contaOrigem= 238596054, contaDestino= 674038564, valor= 1489},
+                                     new transacao {correlationId= 6,dateTime="09/09/2023 14:18:20", contaOrigem= 573659065, contaDestino= 563856300, valor= 49},
+                                     new transacao {correlationId= 7,dateTime="09/09/2023 14:19:00", contaOrigem= 938485762, contaDestino= 2147483649, valor= 44},
+                                     new transacao {correlationId= 8,dateTime="09/09/2023 14:19:01", contaOrigem= 573659065, contaDestino= 675869708, valor= 150},
 
             };
             executarTransacaoFinanceira executor = new executarTransacaoFinanceira();
-            Parallel.ForEach(TRANSACOES, item =>
+            Parallel.ForEach(transacoes, item =>
             {
-                executor.transferir(item.correlation_id, item.conta_origem, item.conta_destino, item.VALOR);
+                executor.transferir(item.correlationId, item.contaOrigem, item.contaDestino, item.valor);
             });
 
         }
     }
 
-    class executarTransacaoFinanceira: acessoDados
+    class executarTransacaoFinanceira : acessoDados
     {
         public void transferir(int correlation_id, long conta_origem, long conta_destino, decimal valor)
         {
-            contas_saldo conta_saldo_origem = getSaldo<contas_saldo>(conta_origem) ;
+            contas_saldo conta_saldo_origem = getSaldo<contas_saldo>(conta_origem);
             if (conta_saldo_origem.saldo < valor)
             {
                 Console.WriteLine("Transacao numero {0 } foi cancelada por falta de saldo", correlation_id);
@@ -80,13 +80,13 @@ namespace TransacaoFinanceira
 
             SALDOS = new Dictionary<int, decimal>();
             this.SALDOS.Add(938485762, 180);
-           
+
         }
         public T getSaldo<T>(long id)
-        {          
+        {
             return (T)Convert.ChangeType(TABELA_SALDOS.Find(x => x.conta == id), typeof(T));
         }
-        public bool atualizar<T>(T  dado)
+        public bool atualizar<T>(T dado)
         {
             try
             {
@@ -100,8 +100,16 @@ namespace TransacaoFinanceira
                 Console.WriteLine(e.Message);
                 return false;
             }
-            
+
         }
 
+    }
+    public class transacao
+    {
+        public int correlationId { get; set; }
+        public string dateTime { get; set; }
+        public long contaOrigem { get; set; }
+        public long contaDestino { get; set; }
+        public decimal valor { get; set; }
     }
 }
