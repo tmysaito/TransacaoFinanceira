@@ -13,19 +13,29 @@ Obs: Voce é livre para implementar na linguagem de sua preferência desde que r
 # Erros na compilação
 
 De início, esses foram os erros ao compilar:
+
 ![alt text](image.png)
+
 Erro CS1503 foi ajustado alterando o tipo de int para long 
+
 ![alt text](image-1.png)
+
 Erro CS0826 foi ajustado criando uma nova classe de transação
+
 ![alt text](image-2.png)
 
 Ao rodar o código, apareceu outro erro:
-![alt text](image-3.png)
+
+![alt text](image-6.png)
+
 Corrigido ao ajustar o índice 
+
 ![alt text](image-4.png)
 
 # Refatoração
 
 O Parallel.ForEach rodava as transações fora de ordem, o que gerava erros indevidos como um débito de conta que gerava falta de saldo, sendo que a conta deveria ter recebido uma transferência antes.
+
 ![alt text](image-5.png)
+
 Alterei para um For Loop para garantir a ordem das execuções.
